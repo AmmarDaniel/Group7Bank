@@ -1,0 +1,137 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package javaapplication2;
+import java.util.Scanner;
+
+/**
+ *
+ * @author BOSS
+ */
+class Benk {
+    private String ID;
+    private String name;
+    private long balance;
+    
+    Scanner sc = new Scanner(System.in);
+    
+    //Method for Sign Up interface
+    void signUp() {
+        System.out.println("Enter your account ID: ");
+        ID = sc.nextLine();
+        System.out.println("Enter your name: ");
+        name = sc.nextLine();
+        System.out.println("Enter your account balance: ");
+        balance = sc.nextLong();
+    }
+    
+    void selection() {  //Method for Main Menu interface
+        System.out.println("Please choose an option:\n1. Display Account Info\n2. Update Account\n3. Deposit Money\n4. Withdraw money\n5. Delete Account\n6. Exit");
+    }
+        
+    //Method for Update Account interface
+    void updateAccount() {
+        System.out.println("");
+        ID = sc.nextLine();
+        System.out.println("Enter your account ID: ");
+        ID = sc.nextLine();
+        System.out.println("Enter your name: ");
+        name = sc.nextLine();
+        System.out.println("Enter your account balance: ");
+        balance = sc.nextLong();
+    }
+        
+    //Method for Deposit Money
+    void depositMoney() {
+        System.out.println("Enter Amount to Deposit: ");
+        long amt = sc.nextLong();
+        balance = balance + amt;    //Update the new balance
+        System.out.println("Your Deposit Was Successful");
+    }
+        
+    //Method for Withdraw Money
+    void withdrawMoney() {
+        long amt;
+        System.out.println("Enter Amount to Withdraw: ");
+        amt = sc.nextLong();
+        if (balance >= amt) {   //Checks if user input exceeds the balance
+            balance = balance - amt;    //Update the new balance
+            System.out.println("Your Withdraw Was Successful");
+        } else {
+            System.out.println("Insufficient Balance..Transaction Failed..");
+        }
+    }
+        
+    //Method for Display Account Information
+    void display() {
+        System.out.println("ID: " + ID + "\nName: " + name + "\nBalance: " + balance);
+    }
+        
+    //Method for Account Deletion
+    void deleteAccount() {
+        System.out.println("You chose the option to delete your account. Are you sure? (Y/N)\n");
+        char yn = sc.next().charAt(0);
+    switch (yn) {   //Ask user for Confirmation
+        case 'Y':
+            System.out.println("You have deleted your account.");
+            System.exit(0);
+            break;
+        case 'N':
+            System.out.println("You canceled to delete your account.");
+            break;
+        default:
+            System.out.println("Invalid option.");
+            break;
+        }
+    }
+}
+
+public class Bank {
+    public static void main(String[] args) {
+        System.out.println("Welcome to bank X!"); // leaving the name as bank X for now, we all can discuss on a name later
+        System.out.println("Press 1 to create a new account");
+        Scanner sc = new Scanner(System.in);
+        int ch = sc.nextInt();
+        Benk C[] = new Benk[1];
+        C[0] = new Benk();
+        
+        if(ch == 1)
+            C[0].signUp();
+        else{
+            System.out.println("Invalid input");
+            System.exit(0);
+        }
+        
+        //Loop until option 6 is entered
+        int option;
+        do{
+            C[0].selection();
+            option = sc.nextInt();
+            switch (option) {
+                case 1:
+                    C[0].display();
+                    break;
+                case 2:
+                    C[0].updateAccount();
+                    break;
+                case 3:
+                    C[0].depositMoney();
+                    break;
+                case 4:
+                    C[0].withdrawMoney();
+                    break;
+                case 5:
+                    C[0].deleteAccount();
+                    break;
+                case 6:
+                    System.out.println("Thank You for Using Bank X!");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid option.");
+                    break;
+                }
+        }while(option != 6);
+    }
+}
