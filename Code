@@ -4,7 +4,6 @@
  */
 package javaapplication2;
 import java.util.Scanner;
-
 /**
  *
  * @author BOSS
@@ -34,11 +33,11 @@ class Benk {
     void updateAccount() {
         System.out.println("");
         ID = sc.nextLine();
-        System.out.println("Enter your account ID: ");
+        System.out.println("Enter New Account ID: ");
         ID = sc.nextLine();
-        System.out.println("Enter your name: ");
+        System.out.println("Enter New Name: ");
         name = sc.nextLine();
-        System.out.println("Enter your account balance: ");
+        System.out.println("Enter New Balance: ");
         balance = sc.nextLong();
     }
         
@@ -65,42 +64,40 @@ class Benk {
         
     //Method for Display Account Information
     void display() {
-        System.out.println("ID: " + ID + "\nName: " + name + "\nBalance: " + balance);
+        System.out.println("ID: " + ID + "\nName: " + name + "\nBalance: RM" + balance);
     }
         
     //Method for Account Deletion
     void deleteAccount() {
-        System.out.println("You chose the option to delete your account. Are you sure? (Y/N)\n");
-        char yn = sc.next().charAt(0);
-    switch (yn) {   //Ask user for Confirmation
-        case 'Y':
-            System.out.println("You have deleted your account.");
-            System.exit(0);
-            break;
-        case 'N':
-            System.out.println("You canceled to delete your account.");
-            break;
-        default:
-            System.out.println("Invalid option.");
-            break;
+        ID = "[DELETED]";
+        name = "[DELETED]";
+        balance = 0;
+    }
+    
+    boolean search(String acn) {
+        if (ID.equals(acn)) {
+            display();
+            return (true);
         }
+        return (false);
     }
 }
 
 public class Bank {
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
-        System.out.println("Welcome to bank X!"); // leaving the name as bank X for now, we all can discuss on a name later
-        System.out.println("Press 1 to create a new account");
+        System.out.println("Welcome to Bank X!"); // leaving the name as bank X for now, we all can discuss on a name later
+        System.out.println("How Many Accounts Would You Like to Create?");
         Scanner sc = new Scanner(System.in);
         int ch = sc.nextInt();
-        Benk C[] = new Benk[1];
-        C[0] = new Benk();
-        
-        if(ch == 1)
-            C[0].signUp();
-        else{
-            System.out.println("Invalid input");
-            System.exit(0);
+        Benk C[] = new Benk[ch];
+        for (int i = 0; i < C.length; i++) {
+            C[i] = new Benk();
+            C[i].signUp();
         }
         
         //Loop until option 6 is entered
@@ -110,19 +107,97 @@ public class Bank {
             option = sc.nextInt();
             switch (option) {
                 case 1:
-                    C[0].display();
+                    for (int i = 0; i < C.length; i++){
+                        C[i].display();
+                    }
                     break;
                 case 2:
-                    C[0].updateAccount();
+                    System.out.print("Enter Account ID: ");
+                        String acn = sc.next();
+                        boolean found = false;
+                        try{
+                            for (int i = 0; i < C.length; i++) {
+                                found = C[i].search(acn);
+                                if (found) {
+                                    C[i].updateAccount();
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                System.out.println("Search Failed..Account Not Exist..");
+                            }
+                        } catch (Exception e){
+                            System.out.println("Search Failed..Account Not Exist..");
+                        }
                     break;
                 case 3:
-                    C[0].depositMoney();
+                    System.out.print("Enter Account ID: ");
+                        acn = sc.next();
+                        found = false;
+                        try{
+                        for (int i = 0; i < C.length; i++) {
+                            found = C[i].search(acn);
+                            if (found) {
+                                C[i].depositMoney();
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            System.out.println("Search Failed..Account Not Exist..");
+                        }
+                        } catch (Exception e){
+                            System.out.println("Search Failed..Account Not Exist..");
+                        }
                     break;
                 case 4:
-                    C[0].withdrawMoney();
+                    System.out.print("Enter Account ID: ");
+                        acn = sc.next();
+                        found = false;
+                        try{
+                        for (int i = 0; i < C.length; i++) {
+                            found = C[i].search(acn);
+                            if (found) {
+                                C[i].withdrawMoney();
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            System.out.println("Search Failed..Account Not Exist..");
+                        }
+                        } catch (Exception e){
+                            System.out.println("Search Failed..Account Not Exist..");
+                        }
                     break;
                 case 5:
-                    C[0].deleteAccount();
+                    System.out.print("Enter Account ID to Delete: ");
+                    acn = sc.next();
+                    found = false;
+                    try{
+                    for (int i = 0; i < C.length; i++) {
+                        found = C[i].search(acn);
+                        if (found) {
+                            System.out.println("You chose the option to delete your account. Are you sure? (Y/N)\n");
+                            char yn = sc.next().charAt(0);
+                            switch (yn) {   //Ask user for Confirmation
+                                case 'Y':
+                                    C[i].deleteAccount();
+                                    System.out.println("You have deleted the account.");
+                                    break;
+                                case 'N':
+                                    System.out.println("You canceled to delete the account.");
+                                    break;
+                                default:
+                                    System.out.println("Invalid option.");
+                                    break;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        System.out.println("Search Failed..Account Not Exist..");
+                    }
+                    } catch (Exception e){
+                            System.out.println("Search Failed..Account Not Exist..");
+                        }
                     break;
                 case 6:
                     System.out.println("Thank You for Using Bank X!");
